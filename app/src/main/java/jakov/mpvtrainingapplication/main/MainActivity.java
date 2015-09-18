@@ -1,5 +1,6 @@
 package jakov.mpvtrainingapplication.main;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements MainView,AdapterV
     @Bind(R.id.mainItemsListView)
     ListView itemsListView;
     private ArrayAdapter<String> adapter;
-    @Bind(R.id.mainProgressBar)
-    ProgressBar progressBar;
+
+    private ProgressDialog progressDialog;
 
     private MainPresenter mainPresenter;
     @Override
@@ -38,16 +39,17 @@ public class MainActivity extends AppCompatActivity implements MainView,AdapterV
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
         itemsListView.setAdapter(adapter);
         itemsListView.setOnItemClickListener(this);
+
     }
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressDialog= ProgressDialog.show(this,"Loading","Loading Content");
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressDialog.dismiss();
     }
 
     @Override
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainView,AdapterV
     public void addClicked(View v){
         String text=etItemText.getText().toString();
         mainPresenter.onAddItemClicked(text);
+        etItemText.setText("");
     }
 
     @Override
